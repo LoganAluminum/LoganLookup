@@ -1,0 +1,12 @@
+<div class="page-container">
+    <h1 class="main-title">Logan Aluminum Entra Search</h1>
+
+    <div class="search-container">
+        <input type="text" class="search-input" placeholder="Search for users and groups..." [(ngModel)]="searchTerm" (input)="onSearchInput()">
+        <div class="search-results" *ngIf="searchResults.length > 0">
+            <div *ngFor="let result of searchResults" class="search-result-item">
+                {{ result.displayName }} ({{ result.userPrincipalName || result.mail }})
+                </div>
+        </div>
+    </div>
+</div>
