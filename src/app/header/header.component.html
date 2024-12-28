@@ -1,0 +1,12 @@
+<header>
+    <h1>{{ siteTitle }}</h1>
+    <input
+      *ngIf="!isSearchPage"
+      type="text"
+      class="search-input"
+      placeholder="Search for users and groups..."
+      [(ngModel)]="searchTerm"
+      (input)="onSearchInput()"
+      (keyup.enter)="onSearchInput()"
+    />
+  </header>

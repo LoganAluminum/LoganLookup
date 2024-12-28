@@ -1,0 +1,23 @@
+header {
+    background-color: #28587B; // Your current background color
+    color: white; // Set text color to white
+    padding: 20px;
+    text-align: center;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  
+    h1 {
+      margin: 0;
+      font-size: 2rem;
+      color: white; // Specifically set h1 text color to white
+    }
+  
+    .search-input {
+      padding: 10px;
+      font-size: 1rem;
+      border: none;
+      border-radius: 5px;
+      width: 300px;
+    }
+  }

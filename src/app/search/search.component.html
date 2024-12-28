@@ -1,6 +1,4 @@
 <div class="page-container">
-  <h1 class="main-title">Logan Aluminum Entra Search</h1>
-
   <div class="search-container">
     <input
       type="text"
@@ -8,6 +6,7 @@
       placeholder="Search for users and groups..."
       [(ngModel)]="searchTerm"
       (input)="onSearchInput()"
+      (keyup.enter)="onSearchInput()"
     />
     <div class="search-results" *ngIf="searchResults.length > 0">
       <div
