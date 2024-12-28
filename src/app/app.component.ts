@@ -1,14 +1,13 @@
 import { Component } from '@angular/core';
-import { RouterOutlet } from '@angular/router';
-import { SearchComponent } from './search/search.component';
+import { RouterOutlet } from '@angular/router'; // Import RouterOutlet
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [RouterOutlet, SearchComponent],
+  imports: [RouterOutlet], // Add RouterOutlet to imports
   templateUrl: './app.component.html',
-  styleUrl: './app.component.scss'
+  styleUrls: ['./app.component.scss'],
 })
 export class AppComponent {
-  title = 'Logan Lookup';
+  // ... (You might not have any specific logic in AppComponent now)
 }
