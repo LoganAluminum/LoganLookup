@@ -1,0 +1,48 @@
+.user-details-container {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    padding: 20px;
+  }
+  
+  .user-info-box,
+  .user-groups-box {
+    background-color: rgba(255, 255, 255, 0.2); /* Semi-transparent white background */
+    border-radius: 10px;
+    padding: 20px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    backdrop-filter: blur(5px); /* Add the frosted glass effect */
+    -webkit-backdrop-filter: blur(5px); /* For Safari */
+  }
+  
+  .user-info-box {
+    .label {
+      font-weight: bold;
+      margin-right: 5px;
+    }
+  }
+  
+  .user-groups-box {
+    ul {
+        list-style-type: none;
+        padding: 0;
+        column-count: 2; /* Create two columns */
+        column-gap: 20px; /* Adjust gap between columns as needed */
+        max-height: 300px; /* Set maximum height for 15 lines (adjust as needed) */
+        overflow: hidden; /* Hide excess items */
+      }
+  
+      li {
+        break-inside: avoid-column; /* Prevent items from breaking across columns */
+        margin-bottom: 8px;
+      }
+  
+    a {
+      color: #0056b3; /* Example link color */
+      text-decoration: none;
+  
+      &:hover {
+        text-decoration: underline;
+      }
+    }
+  }

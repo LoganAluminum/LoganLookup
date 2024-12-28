@@ -1,17 +1,25 @@
 import { Component, OnInit } from '@angular/core';
-import { MsalService } from '@azure/msal-angular';
 import { GraphService } from '../graph.service';
 import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
 import { Subject } from 'rxjs';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
+import { UserDetailsComponent } from '../user-details/user-details.component';
+import { GroupDetailsComponent } from '../group-details/group-details.component';
+import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 
 @Component({
   selector: 'app-search',
   standalone: true,
-  imports: [ FormsModule, CommonModule],
+  imports: [
+    FormsModule,
+    CommonModule,
+    UserDetailsComponent,
+    GroupDetailsComponent,
+    RouterModule
+  ],
   templateUrl: './search.component.html',
-  styleUrls: ['./search.component.scss']
+  styleUrls: ['./search.component.scss'],
 })
 export class SearchComponent implements OnInit {
   searchTerm = '';
@@ -19,25 +27,28 @@ export class SearchComponent implements OnInit {
   private searchInput$ = new Subject<string>();
 
   constructor(
-    private msalService: MsalService,
-    private graphService: GraphService
-  ) { }
+    private graphService: GraphService,
+    private router: Router,
+    private route: ActivatedRoute
+  ) {}
 
   ngOnInit(): void {
-    this.msalService.instance.handleRedirectPromise().then(res => {
-      if (res != null && res.account != null) {
-        this.msalService.instance.setActiveAccount(res.account);
+    this.route.queryParams.subscribe((params) => {
+      this.searchTerm = params['q'] || ''; // Get search term from query parameter
+      if (this.searchTerm) {
+        this.searchEntra(this.searchTerm);
       }
     });
 
     this.searchInput$
-    .pipe(
-      debounceTime(300), // Wait for 300ms pause in typing
-      distinctUntilChanged() // Only emit if value actually changed
-    )
-    .subscribe(searchTerm => {
-      this.searchEntra(searchTerm);
-    });
+      .pipe(
+        debounceTime(300), // Wait for 300ms pause in typing
+        distinctUntilChanged() // Only emit if value actually changed
+      )
+      .subscribe((searchTerm) => {
+        this.searchTerm = searchTerm;
+        this.searchEntra(searchTerm);
+      });
   }
 
   onSearchInput() {
@@ -45,34 +56,38 @@ export class SearchComponent implements OnInit {
   }
 
   async searchEntra(searchTerm: string) {
-    if (!this.isUserLoggedIn()) {
-      // Handle case where user is not logged in
-      console.warn('User is not logged in.');
-      return;
-    }
-
     if (searchTerm.length < 3) {
       this.searchResults = [];
+      this.updateUrl(searchTerm); // Update URL even if search term is too short
       return;
     }
 
     try {
       const results = await this.graphService.searchEntra(searchTerm);
       this.searchResults = results;
+      this.updateUrl(searchTerm); // Update URL with search term
     } catch (error) {
       console.error('Error searching Entra:', error);
-      // Handle error appropriately (e.g., display an error message)
     }
   }
 
-  isUserLoggedIn(): boolean {
-    return this.msalService.instance.getActiveAccount() != null
+  selectResult(result: any) {
+    if (result.userPrincipalName) {
+      this.router.navigate(['/user', result.id], {
+        queryParams: { q: this.searchTerm },
+      });
+    } else if (result.mail) {
+      this.router.navigate(['/group', result.id], {
+        queryParams: { q: this.searchTerm },
+      });
+    }
   }
 
-  login() {
-    this.msalService.instance.loginRedirect(); // Use the instance property
-  }
-  logout() {
-    this.msalService.instance.logout(); // Use the instance property
+  private updateUrl(searchTerm: string) {
+    this.router.navigate([], {
+      relativeTo: this.route,
+      queryParams: { q: searchTerm },
+      queryParamsHandling: 'merge',
+    });
   }
 }
