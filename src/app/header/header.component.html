@@ -6,7 +6,6 @@
       class="search-input"
       placeholder="Search for users and groups..."
       [(ngModel)]="searchTerm"
-      (input)="onSearchInput()"
-      (keyup.enter)="onSearchInput()"
+      (keyup.enter)="performSearch()"
     />
   </header>
