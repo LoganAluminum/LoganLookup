@@ -3,8 +3,8 @@
     <p>Mail: {{ group.mail }}</p>
     <h3>Members:</h3>
     <ul>
-        <li *ngFor="let member of groupMembers">
-            {{ member.displayName }} ({{ member.userPrincipalName || member.mail }})
-        </li>
+      <li *ngFor="let member of groupMembers">
+        <a [routerLink]="['/user', member.id]">{{ member.displayName }}</a> ({{ member.userPrincipalName || member.mail }})
+      </li>
     </ul>
-</div>
+  </div>
