@@ -1,3 +1,4 @@
+// search.component.ts
 import { Component, OnInit } from '@angular/core';
 import { GraphService } from '../graph.service';
 import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
@@ -7,6 +8,7 @@ import { CommonModule } from '@angular/common';
 import { UserDetailsComponent } from '../user-details/user-details.component';
 import { GroupDetailsComponent } from '../group-details/group-details.component';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
+import { SearchService } from '../search.service';
 
 @Component({
   selector: 'app-search',
@@ -16,7 +18,7 @@ import { ActivatedRoute, Router, RouterModule } from '@angular/router';
     CommonModule,
     UserDetailsComponent,
     GroupDetailsComponent,
-    RouterModule
+    RouterModule,
   ],
   templateUrl: './search.component.html',
   styleUrls: ['./search.component.scss'],
@@ -29,26 +31,29 @@ export class SearchComponent implements OnInit {
   constructor(
     private graphService: GraphService,
     private router: Router,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private searchService: SearchService
   ) {}
 
   ngOnInit(): void {
     this.route.queryParams.subscribe((params) => {
-      this.searchTerm = params['q'] || ''; // Get search term from query parameter
+      this.searchTerm = params['q'] || '';
+      this.searchService.updateSearchTerm(this.searchTerm);
       if (this.searchTerm) {
         this.searchEntra(this.searchTerm);
       }
     });
 
     this.searchInput$
-      .pipe(
-        debounceTime(300), // Wait for 300ms pause in typing
-        distinctUntilChanged() // Only emit if value actually changed
-      )
+      .pipe(debounceTime(300), distinctUntilChanged())
       .subscribe((searchTerm) => {
         this.searchTerm = searchTerm;
         this.searchEntra(searchTerm);
       });
+
+    this.searchService.currentSearchTerm.subscribe((term) => {
+      this.searchTerm = term;
+    });
   }
 
   onSearchInput() {
@@ -58,14 +63,12 @@ export class SearchComponent implements OnInit {
   async searchEntra(searchTerm: string) {
     if (searchTerm.length < 3) {
       this.searchResults = [];
-      this.updateUrl(searchTerm); // Update URL even if search term is too short
       return;
     }
 
     try {
       const results = await this.graphService.searchEntra(searchTerm);
       this.searchResults = results;
-      this.updateUrl(searchTerm); // Update URL with search term
     } catch (error) {
       console.error('Error searching Entra:', error);
     }
@@ -81,13 +84,5 @@ export class SearchComponent implements OnInit {
         queryParams: { q: this.searchTerm },
       });
     }
-  }
-
-  private updateUrl(searchTerm: string) {
-    this.router.navigate([], {
-      relativeTo: this.route,
-      queryParams: { q: searchTerm },
-      queryParamsHandling: 'merge',
-    });
   }
 }

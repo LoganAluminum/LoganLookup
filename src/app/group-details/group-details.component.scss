@@ -1,0 +1,15 @@
+.member-list {
+    column-count: 3; /* Adjust the number of columns as needed */
+    column-gap: 20px; /* Adjust gap between columns as needed */
+  }
+  
+  .member-link {
+    display: block; /* Makes the link take up the full width of its column */
+    padding: 5px 0; /* Add some padding for visual spacing */
+    color: #0056b3; /* Example link color */
+    text-decoration: none;
+  
+    &:hover {
+      text-decoration: underline;
+    }
+  }

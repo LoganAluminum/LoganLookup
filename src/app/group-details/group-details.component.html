@@ -1,10 +1,17 @@
-<div *ngIf="group">
-    <h2>{{ group.displayName }}</h2>
-    <p>Mail: {{ group.mail }}</p>
-    <h3>Members:</h3>
-    <ul>
-      <li *ngFor="let member of groupMembers">
-        <a [routerLink]="['/user', member.id]">{{ member.displayName }}</a> ({{ member.userPrincipalName || member.mail }})
-      </li>
-    </ul>
-  </div>
+<div *ngIf="group" class="group-details-container">
+    <div class="group-header">
+        <h2 class="group-name">{{ group.displayName }}</h2>
+        <p class="group-mail">{{ group.mail }}</p>
+    </div>
+
+    <div class="group-members">
+        <h3>Members:</h3>
+        <div class="member-list">
+            <ng-container *ngFor="let member of groupMembers">
+                <a *ngIf="member.userPrincipalName" [routerLink]="['/user', member.id]" class="member-link">
+                    {{ member.displayName }}
+                </a>
+            </ng-container>
+        </div>
+    </div>
+</div>
