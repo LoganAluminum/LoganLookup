@@ -17,7 +17,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
   siteTitle = 'Logan Aluminum Entra Search';
   searchTerm: string = '';
   isSearchPage: boolean = true;
-  private searchSubscription: Subscription | null = null; // Initialize to null
+  private searchSubscription: Subscription | null = null;
 
   constructor(
     private router: Router,
@@ -33,14 +33,18 @@ export class HeaderComponent implements OnInit, OnDestroy {
 
     this.router.events
       .pipe(
-        filter((event: Event): event is NavigationEnd => event instanceof NavigationEnd)
+        filter(
+          (event: Event): event is NavigationEnd =>
+            event instanceof NavigationEnd
+        )
       )
       .subscribe((event: NavigationEnd) => {
         this.isSearchPage = event.url === '/' || event.url.startsWith('/?q=');
       });
   }
 
-  onSearchInput() {
+  // Call this method only when you want to trigger the search
+  performSearch() {
     this.searchService.updateSearchTerm(this.searchTerm);
     if (this.searchTerm.length >= 3) {
       this.router.navigate(['/'], { queryParams: { q: this.searchTerm } });
