@@ -14,8 +14,6 @@ import { ActivatedRoute, Router, RouterModule } from '@angular/router';
   imports: [
     FormsModule,
     CommonModule,
-    UserDetailsComponent,
-    GroupDetailsComponent,
     RouterModule
   ],
   templateUrl: './search.component.html',

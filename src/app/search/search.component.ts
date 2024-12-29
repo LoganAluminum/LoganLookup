@@ -15,8 +15,6 @@ import { SearchService } from '../search.service';
   imports: [
     FormsModule,
     CommonModule,
-    UserDetailsComponent,
-    GroupDetailsComponent,
     RouterModule,
   ],
   templateUrl: './search.component.html',
