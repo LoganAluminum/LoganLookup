@@ -52,6 +52,39 @@ export class GraphService {
     return await response.json();
   }
 
+  async getUserPhoto(userId: string): Promise<string | null> {
+  try {
+    const response = await fetch(
+      `http://localhost:5220/api/User/${userId}/photo`,
+      {
+        method: 'GET',
+      }
+    );
+
+    if (!response.ok) {
+      console.error(
+        `HTTP error fetching user photo! status: ${response.status}`
+      );
+      return null;
+    }
+
+    const blob = await response.blob();
+    if (blob.size === 0) {
+      console.log('User does not have a profile photo.');
+      return null;
+    }
+
+    const reader = new FileReader();
+    return new Promise<string>((resolve) => {
+      reader.onloadend = () => resolve(reader.result as string);
+      reader.readAsDataURL(blob);
+    });
+  } catch (error) {
+    console.error('Error fetching user photo:', error);
+    return null;
+  }
+}
+
   async getUserGroups(userId: string): Promise<any[]> {
     const response = await fetch(
       `http://localhost:5220/api/User/${userId}/groups`,
