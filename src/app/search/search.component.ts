@@ -1,4 +1,3 @@
-// search.component.ts
 import { Component, OnInit } from '@angular/core';
 import { GraphService } from '../graph.service';
 import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
@@ -57,6 +56,7 @@ export class SearchComponent implements OnInit {
   }
 
   onSearchInput() {
+    this.searchService.updateSearchTerm(this.searchTerm);
     this.searchInput$.next(this.searchTerm);
   }
 
@@ -75,13 +75,15 @@ export class SearchComponent implements OnInit {
   }
 
   selectResult(result: any) {
+    const searchTerm = this.searchService.getCurrentSearchTerm(); // Get the current search term
+
     if (result.userPrincipalName) {
       this.router.navigate(['/user', result.id], {
-        queryParams: { q: this.searchTerm },
+        queryParams: { q: searchTerm }, // Pass the current search term as a query parameter
       });
     } else if (result.mail) {
       this.router.navigate(['/group', result.id], {
-        queryParams: { q: this.searchTerm },
+        queryParams: { q: searchTerm }, // Pass the current search term as a query parameter
       });
     }
   }
