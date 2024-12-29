@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { GraphService } from '../graph.service';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { GroupDetailsComponent } from '../group-details/group-details.component';
+import { SearchService } from '../search.service';
 
 @Component({
   selector: 'app-user-details',
@@ -16,16 +17,28 @@ export class UserDetailsComponent implements OnInit {
   userGroups: any[] = [];
   userId: string | null = null;
 
-  constructor(private graphService: GraphService, private router: Router, private route: ActivatedRoute) { }
+  constructor(
+    private graphService: GraphService, 
+    private router: Router, 
+    private route: ActivatedRoute,
+    private searchService: SearchService
+    ) { }
 
-  ngOnInit(): void {
-    this.route.paramMap.subscribe(params => {
-      this.userId = params.get('userId');
-      if (this.userId) {
-        this.loadUserDetails();
-      }
-    });
-  }
+    ngOnInit(): void {
+      this.route.paramMap.subscribe(params => {
+        this.userId = params.get('userId');
+        if (this.userId) {
+          this.loadUserDetails();
+        }
+      });
+  
+      this.route.queryParamMap.subscribe(queryParams => {
+        const searchTerm = queryParams.get('q');
+        if (searchTerm) {
+          this.searchService.updateSearchTerm(searchTerm);
+        }
+      });
+    }
 
   async loadUserDetails() {
     if (this.userId) {

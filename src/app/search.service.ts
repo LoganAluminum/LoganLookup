@@ -13,4 +13,8 @@ export class SearchService {
   updateSearchTerm(searchTerm: string) {
     this.searchTermSubject.next(searchTerm);
   }
+
+  getCurrentSearchTerm(): string {
+    return this.searchTermSubject.value;
+  }
 }

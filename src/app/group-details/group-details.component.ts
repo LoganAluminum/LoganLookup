@@ -1,7 +1,14 @@
-import { Component, OnInit } from '@angular/core';
+import {
+  Component,
+  Input,
+  OnChanges,
+  SimpleChanges,
+  OnInit,
+} from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { GraphService } from '../graph.service';
 import { ActivatedRoute, RouterModule } from '@angular/router';
+import { SearchService } from '../search.service';
 
 @Component({
   selector: 'app-group-details',
@@ -17,7 +24,8 @@ export class GroupDetailsComponent implements OnInit {
 
   constructor(
     private graphService: GraphService,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private searchService: SearchService
   ) {}
 
   ngOnInit(): void {
@@ -29,12 +37,23 @@ export class GroupDetailsComponent implements OnInit {
         this.loadGroupMembers();
       }
     });
+
+    this.route.queryParamMap.subscribe((queryParams) => {
+      const searchTerm = queryParams.get('q');
+      console.log(searchTerm);
+      if (searchTerm) {
+        this.searchService.updateSearchTerm(searchTerm);
+      }
+    });
   }
 
   async loadGroupDetails(groupId: string) {
     try {
       this.group = await this.graphService.getGroupDetails(groupId);
-      console.log('GroupDetailsComponent - loadGroupDetails - group:', this.group);
+      console.log(
+        'GroupDetailsComponent - loadGroupDetails - group:',
+        this.group
+      );
     } catch (error) {
       console.error('Error loading group details:', error);
     }

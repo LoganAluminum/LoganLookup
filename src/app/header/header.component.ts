@@ -43,7 +43,6 @@ export class HeaderComponent implements OnInit, OnDestroy {
       });
   }
 
-  // Call this method only when you want to trigger the search
   performSearch() {
     this.searchService.updateSearchTerm(this.searchTerm);
     if (this.searchTerm.length >= 3) {
