@@ -1,48 +1,72 @@
 .user-details-container {
     display: flex;
-    flex-direction: column;
+    flex-direction: column; /* Stack elements vertically */
     gap: 20px;
     padding: 20px;
   }
   
-  .user-info-box,
-  .user-groups-box {
-    background-color: rgba(255, 255, 255, 0.2); /* Semi-transparent white background */
+  .user-info-box {
+    background-color: rgba(255, 255, 255, 0.2);
     border-radius: 10px;
     padding: 20px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    backdrop-filter: blur(5px); /* Add the frosted glass effect */
-    -webkit-backdrop-filter: blur(5px); /* For Safari */
-  }
+    backdrop-filter: blur(5px);
+    -webkit-backdrop-filter: blur(5px);
+    display: flex; /* Make user-info-box a flex container */
+    justify-content: space-between; /* Space out the content and photo */
+    align-items: flex-start; /* Align items to the top */
   
-  .user-info-box {
+    .user-info-content {
+        flex: 1; /* Allow content to take up available space */
+      }
+
     .label {
-      font-weight: bold;
-      margin-right: 5px;
-    }
+        font-weight: bold;
+        margin-right: 5px;
+  }
   }
   
   .user-groups-box {
-    ul {
-        list-style-type: none;
-        padding: 0;
-        column-count: 2; /* Create two columns */
-        column-gap: 20px; /* Adjust gap between columns as needed */
-        max-height: 300px; /* Set maximum height for 15 lines (adjust as needed) */
-        overflow: hidden; /* Hide excess items */
-      }
+    background-color: rgba(255, 255, 255, 0.2);
+    border-radius: 10px;
+    padding: 20px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    backdrop-filter: blur(5px);
+    -webkit-backdrop-filter: blur(5px);
+    flex: 1; /* This box will take up the available space */
   
-      li {
-        break-inside: avoid-column; /* Prevent items from breaking across columns */
-        margin-bottom: 8px;
-      }
+    ul {
+      list-style-type: none;
+      padding: 0;
+      column-count: 2;
+      column-gap: 20px;
+      max-height: 300px;
+      overflow: hidden;
+    }
+  
+    li {
+      break-inside: avoid-column;
+      margin-bottom: 8px;
+    }
   
     a {
-      color: #0056b3; /* Example link color */
+      color: #0056b3;
       text-decoration: none;
   
       &:hover {
         text-decoration: underline;
       }
+    }
+  }
+  
+  .user-photo-box {
+    width: 200px; /* Adjust width as needed */
+    height: 200px; /* Adjust height as needed */
+    border-radius: 10px;
+    overflow: hidden;
+  
+    .user-photo {
+      width: 100%;
+      height: auto;
     }
   }

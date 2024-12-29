@@ -1,27 +1,25 @@
 <div *ngIf="userDetails" class="user-details-container">
     <div class="user-info-box">
-      <h2>{{ userDetails.displayName }}</h2>
-      <p>
-        <span class="label">User Principal Name:</span>
-        {{ userDetails.userPrincipalName }}
-      </p>
-      <p><span class="label">Email:</span> {{ userDetails.mail }}</p>
-      <p><span class="label">Job Title:</span> {{ userDetails.jobTitle }}</p>
-      <p>
-        <span class="label">Department:</span> {{ userDetails.department }}
-      </p>
-      <p>
-        <span class="label">Office Location:</span>
-        {{ userDetails.officeLocation }}
-      </p>
+      <div class="user-info-content">
+        <h2>{{ userDetails.displayName }}</h2>
+        <p><span class="label">User Principal Name:</span> {{ userDetails.userPrincipalName }}</p>
+        <p><span class="label">Email:</span> {{ userDetails.mail }}</p>
+        <p><span class="label">Job Title:</span> {{ userDetails.jobTitle }}</p>
+        <p><span class="label">Department:</span> {{ userDetails.department }}</p>
+        <p><span class="label">Office Location:</span> {{ userDetails.officeLocation }}</p>
+      </div>
+      <div class="user-photo-box">
+        <img *ngIf="userPhoto" [src]="userPhoto" alt="User Photo" class="user-photo" />
+        <div *ngIf="!userPhoto">No photo available</div>
+      </div>
     </div>
   
     <div class="user-groups-box">
-        <h3>Groups:</h3>
-        <ul>
-          <li *ngFor="let group of userGroups">
-            <a [routerLink]="['/group', group.id]">{{ group.displayName }}</a>
-          </li>
-        </ul>
-      </div>
+      <h3>Groups:</h3>
+      <ul>
+        <li *ngFor="let group of userGroups">
+          <a [routerLink]="['/group', group.id]">{{ group.displayName }}</a>
+        </li>
+      </ul>
+    </div>
   </div>
