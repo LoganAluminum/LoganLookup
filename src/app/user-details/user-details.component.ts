@@ -8,7 +8,7 @@ import { SearchService } from '../search.service';
 @Component({
   selector: 'app-user-details',
   standalone: true,
-  imports: [CommonModule, RouterModule, GroupDetailsComponent],
+  imports: [CommonModule, RouterModule],
   templateUrl: './user-details.component.html',
   styleUrls: ['./user-details.component.scss']
 })
