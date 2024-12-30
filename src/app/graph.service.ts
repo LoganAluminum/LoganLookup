@@ -111,7 +111,7 @@ export class GraphService {
           method: 'GET',
         }
       );
-
+  
       if (!response.ok) {
         if (response.status === 404) {
           console.log('User does not have a profile photo.');
@@ -122,21 +122,19 @@ export class GraphService {
         );
         return null;
       }
-
+  
       const blob = await response.blob();
       if (blob.size === 0) {
         console.log('User does not have a profile photo.');
         return null;
       }
-
-      const reader = new FileReader();
-      return new Promise<string>((resolve) => {
-        reader.onloadend = () => resolve(reader.result as string);
-        reader.readAsDataURL(blob);
-      });
+  
+      // Return a blob URL instead
+      return URL.createObjectURL(blob);
     } catch (error) {
       console.error('Error fetching or processing user photo:', error);
       return null;
     }
   }
+  
 }
