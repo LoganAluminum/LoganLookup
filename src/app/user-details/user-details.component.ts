@@ -67,8 +67,8 @@ export class UserDetailsComponent implements OnInit {
   async loadUserPhoto() {
     if (this.userId) {
       try {
-        const photoUrl = await this.graphService.getUserPhoto(this.userId);
-        this.userPhoto = photoUrl;
+        const photoDataUrl = await this.graphService.getUserPhoto(this.userId);
+        this.userPhoto = photoDataUrl;
       } catch (error) {
         console.error('Error loading user photo:', error);
       }
